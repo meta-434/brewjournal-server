@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const UserService = require("../services/UserService");
 const axios = require("axios");
@@ -12,7 +13,7 @@ router.get("/create", (req, res) => {
   try {
     axios
       .post(
-        "https://equipped-mantis-70.hasura.app/api/rest/users/create",
+        `${process.env.HASURA_ENDPOINT}/users/create`,
         {
           display_name: req.oidc.user.nickname,
           auth0_id: req.oidc.user.sub,
@@ -21,7 +22,7 @@ router.get("/create", (req, res) => {
         {
           headers: {
             "x-hasura-admin-secret":
-              "",
+              process.env.HASURA_ADMIN_KEY,
           },
         }
       )
