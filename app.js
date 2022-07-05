@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -18,13 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: "9e3dde0a5af465a9e452595cdb733c25ca99efa40c87d3643fb4bd73e09d6227",
+  secret: process.env.AUTH0_SECRET,
   baseURL: "http://localhost:3000",
-  clientID: "u7pwIDDcpClWsj07OUOmgk2HRzqYP0GT",
-  issuerBaseURL: "https://dev-brewjournal.us.auth0.com",
+  clientID: process.env.AUTH0_CLIENT_ID,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
 };
 app.use(auth(config));
 app.use("/", indexRouter);
