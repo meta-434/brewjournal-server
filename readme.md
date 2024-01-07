@@ -21,7 +21,7 @@ This is the server-side component of the BrewJournal application. It provides th
 
 To start the server, run the following command:
 
-    ```bash
+    ```
     npm run dev    
     ```
 
