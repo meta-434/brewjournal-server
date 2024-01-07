@@ -6,13 +6,27 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const { auth, requiresAuth } = require("express-openid-connect");
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
+const profileRouter = require("./routes/profile");
+const recipesRouter = require("./routes/recipes");
+const loginRouter = require("./routes/login");
+const pool = require('./db');
+const port = 3000;
 
-const app = express();
+const app = express();  
+app.set('view engine', 'pug');
+
+//auth0 config
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.auth0_secret,
+  baseURL: `http://localhost:${port}`,
+  clientID: process.env.auth0_client_ID,
+  issuerBaseURL: process.env.auth0_issuer_base_URL,
+}
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -20,17 +34,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.AUTH0_SECRET,
-  baseURL: "http://localhost:3000",
-  clientID: process.env.AUTH0_CLIENT_ID,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-};
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}.`);
+});
 app.use(auth(config));
 app.use("/", indexRouter);
-app.use("/users", requiresAuth(), usersRouter);
+app.use("/login", requiresAuth(), loginRouter);
+app.use("/profile", requiresAuth(), profileRouter);
+app.use("/recipes", recipesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
