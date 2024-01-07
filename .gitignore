@@ -7,7 +7,8 @@
 
 # testing
 /coverage
-
+test.rest
+*.rest
 # production
 /build
 
