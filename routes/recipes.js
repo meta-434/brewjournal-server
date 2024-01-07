@@ -2,8 +2,7 @@ var express = require("express");
 var router = express.Router();
 const setupQuery = require("../queries/queries_setup");
 const getAllRecipes = require("../queries/queries_recipes");
-const pool = require('./db');
-
+const pool = require("../db");
 router.get('/', async (req, res) => {
     try {
         const data = await pool.query(getAllRecipes);
