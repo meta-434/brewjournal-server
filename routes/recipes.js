@@ -2,9 +2,8 @@ var express = require("express");
 var router = express.Router();
 const setupQuery = require("../queries/queries_setup");
 const getAllRecipes = require("../queries/queries_recipes");
-const { requiresAuth } = require("express-openid-connect");
 
-router.get('/', requiresAuth(), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const data = await pool.query(getAllRecipes);
         res.status(200).send(data.rows);
@@ -15,7 +14,7 @@ router.get('/', requiresAuth(), async (req, res) => {
     }
 });
 
-router.post('/', requiresAuth(), async (req, res) => {
+router.post('/', async (req, res) => {
     const { version, isPublic, name, description, steps} = req.body;
     const owner_id = req.oidc.user.sub;
 

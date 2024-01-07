@@ -1,15 +1,8 @@
 const setupQuery = `
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    nickname VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    picture_url VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    auth0_id VARCHAR(255) NOT NULL,
-    sid VARCHAR(255),
-    updated_at TIMESTAMP,
-    is_verified BOOLEAN NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS recipes (
@@ -22,6 +15,11 @@ CREATE TABLE IF NOT EXISTS recipes (
     steps TEXT,
     owner_id INTEGER REFERENCES users(id)
 );
+
+INSERT INTO users (email, password) 
+VALUES 
+    ('alex@hapgood.me', 'password123'),
+    ('garrett@moore.me', 'password456');
 `;
 
 module.exports = setupQuery;
