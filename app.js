@@ -8,7 +8,6 @@ const indexRouter = require("./routes/index");
 const profileRouter = require("./routes/profile");
 const recipesRouter = require("./routes/recipes");
 const loginRouter = require("./routes/login");
-const pool = require('./db');
 const port = 3000;
 
 const app = express();  
